@@ -71,7 +71,7 @@
         app:layout_constraintStart_toStartOf="@+id/reyclerview_message_list"
         app:layout_constraintTop_toTopOf="@+id/reyclerview_message_list"
         app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@drawable/icon_file" />
+        app:srcCompat="@drawable/icon_picture" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab3"

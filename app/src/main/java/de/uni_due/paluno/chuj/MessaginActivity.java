@@ -8,6 +8,8 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableList;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Handler;
@@ -154,10 +156,10 @@ public class MessaginActivity extends AppCompatActivity implements GetMessageAda
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent()
-                        .setType("*/*")
+                        .setType("image/*")
                         .setAction(Intent.ACTION_GET_CONTENT);
 
-                startActivityForResult(Intent.createChooser(intent, "Select a file"), 1995);
+                startActivityForResult(Intent.createChooser(intent, "Select a picture"), 1995);
                 setResult(Activity.RESULT_OK);
 
 
@@ -251,7 +253,6 @@ public class MessaginActivity extends AppCompatActivity implements GetMessageAda
                             }
                         },  1500);
 
-
                     } else {
                         Toast.makeText(MessaginActivity.this, "Write a message", Toast.LENGTH_SHORT).show();
 
@@ -338,7 +339,15 @@ public class MessaginActivity extends AppCompatActivity implements GetMessageAda
     }
 
     public byte[] getBytes(InputStream inputStream) throws IOException {
-        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+       /* Bitmap bm = BitmapFactory.decodeStream(inputStream);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.PNG,100,baos);
+        byte[] b = baos.toByteArray();
+        return b;*/
+        //Base64.de
+
+
+       ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
         int bufferSize = 1024;
         byte[] buffer = new byte[bufferSize];
 

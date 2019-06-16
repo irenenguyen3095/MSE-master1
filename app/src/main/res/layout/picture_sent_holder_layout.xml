@@ -23,7 +23,11 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/avatar"
         android:layout_centerHorizontal="true"
-        app:srcCompat="@drawable/chatty_logo" />
+        app:srcCompat="@drawable/chatty_logo"
+        android:adjustViewBounds="true"
+        android:cropToPadding="false"
+        android:scaleType="fitXY"
+       />
 
     <TextView
         android:id="@+id/time_sent"

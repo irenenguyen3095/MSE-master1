@@ -38,7 +38,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
     {
 
-         backupMap=null;
+        backupMap=null;
         this.mContext=mContext;
         this.list=list;
         this.mOnFriendListener = onFriendListener;

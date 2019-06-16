@@ -3,6 +3,7 @@ package de.uni_due.paluno.chuj;
 
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ParseException;
@@ -136,22 +137,30 @@ public class GetMessageAdapter extends RecyclerView.Adapter {
                 }
             case VIEW_TYPE_PICTURE_RECEIVED:
 
+
                 byte[] decodedString1 = Base64.decode(message, 12);
                 Bitmap decodedByte1 = BitmapFactory.decodeByteArray(decodedString1, 0, decodedString1.length);
+
                 ((TheirPictureViewHolder) viewHolder).img_recived.setImageBitmap(decodedByte1);
                 ((TheirPictureViewHolder) viewHolder).theirname.setText(sender+"         sent on:" + stringDatum);
                 break;
 
             case VIEW_TYPE_PICTURE_SENT:
+
+
                 byte[] decodedString2 = Base64.decode(message, 12);
+
                 Bitmap decodedByte2 = BitmapFactory.decodeByteArray(decodedString2, 0, decodedString2.length);
+
                 ((myPictureViewHolder) viewHolder).my_time.setText(stringDatum);
                 ((myPictureViewHolder) viewHolder).img_sent.setImageBitmap(decodedByte2);
                 break;
         }
 
 
+
     }
+
 
     public int getItemViewType(int position) {
         Datum singleMessage;
