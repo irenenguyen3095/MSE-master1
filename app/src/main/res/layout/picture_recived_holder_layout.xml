@@ -34,7 +34,7 @@
         android:layout_below="@id/avatar"
         android:layout_centerHorizontal="true"
         android:adjustViewBounds="true"
-        android:scaleType="fitCenter"
+        android:scaleType="fitXY"
         app:srcCompat="@drawable/chatty_logo" />
 
 </RelativeLayout>
