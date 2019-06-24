@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableList;
+import android.databinding.ObservableMap;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
@@ -44,6 +45,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import de.uni_due.paluno.chuj.Models.Anmeldungsantwort;
 import de.uni_due.paluno.chuj.Models.ConnectivityHelper;
@@ -220,6 +222,9 @@ public class MessaginActivity extends AppCompatActivity implements GetMessageAda
                     adapter = new GetMessageAdapter(messagesList, getApplicationContext(), username,MessaginActivity.this);
                     recyclerView.setAdapter(adapter);
                     recyclerView.scrollToPosition(messagesList.size() - 1);
+                    Map<String,List<Datum>> backupMap;
+                    backupMap=MenuActivity.getBackupMap();
+                    backupMap.put(recipent,messagesList);
 
                 }
 
@@ -347,7 +352,7 @@ public class MessaginActivity extends AppCompatActivity implements GetMessageAda
         //Base64.de
 
 
-       ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
         int bufferSize = 1024;
         byte[] buffer = new byte[bufferSize];
 
@@ -399,7 +404,7 @@ public class MessaginActivity extends AppCompatActivity implements GetMessageAda
         super.onPause();
 
 
-    Status.setMsgStatus(false);
+        Status.setMsgStatus(false);
 
     }
 
@@ -424,7 +429,7 @@ public class MessaginActivity extends AppCompatActivity implements GetMessageAda
     public void onRestart(){
 
         super.onRestart();
-         Status.setMsgStatus(true);
+        Status.setMsgStatus(true);
 
 
 
@@ -433,7 +438,7 @@ public class MessaginActivity extends AppCompatActivity implements GetMessageAda
     public void onStop()
     {
         super.onStop();
-         Status.setMsgStatus(false);
+        Status.setMsgStatus(false);
 
     }
 

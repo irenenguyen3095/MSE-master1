@@ -282,7 +282,7 @@ public class MenuActivity extends AppCompatActivity implements RecyclerAdapter.O
         });
 
     }
-    public  Map<String,List<Datum>>getBackupMap()
+    public static  Map<String,List<Datum>>getBackupMap()
     {
         return backupMap;
     }
@@ -294,10 +294,10 @@ public class MenuActivity extends AppCompatActivity implements RecyclerAdapter.O
 
 
         if (ConnectivityHelper.isConnectedToNetwork(getApplicationContext())) {
-            backupMap = new ObservableArrayMap<>();
-            msgBackzpList=new ArrayList<Datum>();
-            backupList=new ObservableArrayList<String>();
-            getFriends(new User(username, password));
+            recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
+            recyclerView.setLayoutManager(new LinearLayoutManager(MenuActivity.this));
+            adapter = new RecyclerAdapter(backupList, getApplicationContext(), MenuActivity.this,backupMap);
+            recyclerView.setAdapter(adapter);
         } else {
 
 
@@ -350,9 +350,10 @@ public class MenuActivity extends AppCompatActivity implements RecyclerAdapter.O
         startActivity(intent);
 
     }
-public void setBackupMap(ObservableMap<String,List<Datum>> backupMap)
-{
-    this.backupMap=backupMap;
-}
+
+    public void setBackupMap(ObservableMap<String,List<Datum>> backupMap)
+    {
+        this.backupMap=backupMap;
+    }
 
 }

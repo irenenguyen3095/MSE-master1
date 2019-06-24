@@ -25,7 +25,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     private List<String> list;
     private Context mContext;
     private OnFriendListener mOnFriendListener;
-   ;
+    ;
     private static Map<String,List<Datum>> backupMap;
     private Date time;
     private SimpleDateFormat formatter;
@@ -69,37 +69,50 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         String contact = list.get(position).toString();
 
         holder.firstLine.setText(contact);
-        if(backupMap!=null) {
+        try {
+            if(backupMap!=null) {
+                if(backupMap.get(contact)!=null) {
 
-                int indexListInside = backupMap.get(contact).size() - 1;
-                stringDatum = backupMap.get(contact).get(indexListInside).getDateTime();
-                try {
-                    time = formatter.parse(stringDatum);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                stringDatum = time.toString();
-                int index = stringDatum.indexOf("MESZ");
-                //if (stringDatum != NULL)
-                stringDatum = stringDatum.substring(0, index + 1);
-                String messageSender = backupMap.get(contact).get(indexListInside).getSender();
-                if (messageSender.equals(contact)) {
-                    if(isBase64(backupMap.get(contact).get(indexListInside).getData())){
-                        holder.secondLine.setText(stringDatum + ", " + messageSender + ": Picture" );
-                    }
-                    else{
-                        holder.secondLine.setText(stringDatum + ", " + messageSender + ": " + backupMap.get(contact).get(indexListInside).getData());
-                    }
-                } else {
-                    if(isBase64(backupMap.get(contact).get(indexListInside).getData())){
-                        holder.secondLine.setText(stringDatum + ":Picture " );
-                    }
-                    else{
-                        holder.secondLine.setText(stringDatum + ": " + backupMap.get(contact).get(indexListInside).getData());
-                    }
-                }
 
+                    int indexListInside = backupMap.get(contact).size() - 1;
+                    stringDatum = backupMap.get(contact).get(indexListInside).getDateTime();
+                    try {
+                        time = formatter.parse(stringDatum);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    stringDatum = time.toString();
+                    int index = stringDatum.indexOf("MESZ");
+                    //if (stringDatum != NULL)
+                    stringDatum = stringDatum.substring(0, index + 1);
+                    String messageSender = backupMap.get(contact).get(indexListInside).getSender();
+                    if (messageSender.equals(contact)) {
+                        if (backupMap.get(contact).get(indexListInside).getMimetype().equals("file")) {
+                            holder.secondLine.setText(stringDatum + ", " + messageSender + ": Picture");
+                        } else {
+                            holder.secondLine.setText(stringDatum + ", " + messageSender + ": " + backupMap.get(contact).get(indexListInside).getData());
+                        }
+                    } else {
+                        if (backupMap.get(contact).get(indexListInside).getMimetype().equals("file")) {
+                            holder.secondLine.setText(stringDatum + ":Picture ");
+                        } else {
+                            holder.secondLine.setText(stringDatum + ": " + backupMap.get(contact).get(indexListInside).getData());
+                        }
+                    }
+
+                }
+                else
+                {
+                    holder.secondLine.setText("Write first message");
+                }
             }
+        }
+        catch (Exception e)
+        {
+            holder.secondLine.setText("could not load the conversation");
+        }
+
+
 
 
 
