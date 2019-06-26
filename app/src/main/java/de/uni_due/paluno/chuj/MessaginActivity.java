@@ -15,6 +15,7 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
@@ -330,14 +331,12 @@ public class MessaginActivity extends AppCompatActivity implements GetMessageAda
         if(requestCode == 1995 && resultCode == RESULT_OK) {
 
             Uri file = data.getData(); //The uri with the location of the file
-            File resumeFile= new File(file.getPath());
+
             InputStream inputStream = null;
             try {
-                File compressedImageFile = new Compressor(MessaginActivity.this).compressToFile(resumeFile);
-
-                //inputStream = getContentResolver().openInputStream();
-                inputStream= new FileInputStream(compressedImageFile);
+                inputStream = getContentResolver().openInputStream(file);
                 byte[] inputData = getBytes(inputStream);
+
                 //encode bse64
                 String encode = Base64.encodeToString(inputData,12);
                 //Toast.makeText(MessaginActivity.this, encode, Toast.LENGTH_SHORT).show();
@@ -357,14 +356,21 @@ public class MessaginActivity extends AppCompatActivity implements GetMessageAda
     public byte[] getBytes(InputStream inputStream) throws IOException {
 
         ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+
+        Bitmap bmp = BitmapFactory.decodeStream(inputStream);
+
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.JPEG, 50, stream);
+
         int bufferSize = 2048*3;
         byte[] buffer = new byte[bufferSize];
 
         int len = 0;
         while ((len = inputStream.read(buffer)) != -1) {
-            byteBuffer.write(buffer, 0, len);
+            stream.write(buffer, 0, len);
         }
-        return byteBuffer.toByteArray();
+
+        return stream.toByteArray();
 
 
 
