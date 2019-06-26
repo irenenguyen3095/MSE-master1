@@ -141,7 +141,10 @@ public class GetMessageAdapter extends RecyclerView.Adapter {
                 byte[] decodedString1 = Base64.decode(message, 12);
                 Bitmap decodedByte1 = BitmapFactory.decodeByteArray(decodedString1, 0, decodedString1.length);
 
-                ((TheirPictureViewHolder) viewHolder).img_recived.setImageBitmap(decodedByte1);
+                //ivProfilePic.setImageBitmap(Bitmap.createScaledBitmap(b, 120, 120, false));
+                int height= ((TheirPictureViewHolder) viewHolder).img_recived.getHeight();
+                int width= ((TheirPictureViewHolder) viewHolder).img_recived.getWidth();
+                ((TheirPictureViewHolder) viewHolder).img_recived.setImageBitmap(Bitmap.createScaledBitmap(decodedByte1,width, height, false));
                 ((TheirPictureViewHolder) viewHolder).theirname.setText(sender+"         sent on:" + stringDatum);
                 break;
 
@@ -152,8 +155,10 @@ public class GetMessageAdapter extends RecyclerView.Adapter {
 
                 Bitmap decodedByte2 = BitmapFactory.decodeByteArray(decodedString2, 0, decodedString2.length);
 
+                int height2= ((myPictureViewHolder) viewHolder).img_sent.getHeight();
+                int width2= ((myPictureViewHolder) viewHolder).img_sent.getWidth();
                 ((myPictureViewHolder) viewHolder).my_time.setText(stringDatum);
-                ((myPictureViewHolder) viewHolder).img_sent.setImageBitmap(decodedByte2);
+                ((myPictureViewHolder) viewHolder).img_sent.setImageBitmap(Bitmap.createScaledBitmap(decodedByte2,width2, height2, false));
                 break;
         }
 
