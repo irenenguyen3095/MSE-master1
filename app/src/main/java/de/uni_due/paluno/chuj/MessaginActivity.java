@@ -1,5 +1,4 @@
 package de.uni_due.paluno.chuj;
-
 import android.Manifest;
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -51,6 +50,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -101,6 +101,7 @@ public class MessaginActivity extends AppCompatActivity implements GetMessageAda
     private FloatingActionButton floatSendLoc;
     private FloatingActionButton floatSendFile;
     private boolean openfloat = false;
+    private Date date;
 
 
 
@@ -209,8 +210,7 @@ public class MessaginActivity extends AppCompatActivity implements GetMessageAda
             mapButton = (ImageButton) findViewById(R.id.mappeButton);
             mapButton = (ImageButton) findViewById(R.id.mappeButton);
 
-            getMessages = new GetMessages(username, password, recipent);
-            getMesseages(getMessages);
+
 
             messagesList.addOnListChangedCallback(new ObservableList.OnListChangedCallback<ObservableList<Datum>>() {
                 @Override
@@ -248,6 +248,18 @@ public class MessaginActivity extends AppCompatActivity implements GetMessageAda
 
                 }
             });
+
+            if(Splashscreen.getBackupMap().get(recipent)!=null)
+            {
+                messagesList.addAll(Splashscreen.getBackupMap().get(recipent));
+            }
+            else
+            {
+                Toast.makeText(MessaginActivity.this,"Reloading the messages, please wait",Toast.LENGTH_SHORT).show();
+
+                getMessages = new GetMessages(username, password, recipent);
+                getMesseages(getMessages);
+            }
             sendMessageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -256,15 +268,6 @@ public class MessaginActivity extends AppCompatActivity implements GetMessageAda
                         message = messageBox.getText().toString();
                         sendMessage(new MessageModel(username, password, recipent, mimeType, message));   // hier wird die Methode registerUser aufgerufen
                         messageBox.setText("");
-
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                getMesseages(getMessages);
-
-
-                            }
-                        },  1500);
 
                     } else {
                         Toast.makeText(MessaginActivity.this, "Write a message", Toast.LENGTH_SHORT).show();
@@ -378,7 +381,7 @@ public class MessaginActivity extends AppCompatActivity implements GetMessageAda
 
     }
 
-    private void sendFile(MessageModel fileModel){
+    private void sendFile(final MessageModel fileModel){
         Call<MessageResponse> sendLocationCall = new RestClient().getApiService().sendMessage(fileModel);
 
         sendLocationCall.enqueue(new Callback<MessageResponse>() {
@@ -386,6 +389,12 @@ public class MessaginActivity extends AppCompatActivity implements GetMessageAda
             public void onResponse(Call<MessageResponse> call, Response<MessageResponse> response) {
                 if (response.body() != null) {
                     Toast.makeText(MessaginActivity.this, response.body().getInfo(), Toast.LENGTH_SHORT).show();
+
+                    date = new Date();
+
+                    messagesList.add(new Datum(username,recipent,"fileInsider",fileModel.getData(),date.toString()));
+
+
 
                 }
             }
@@ -598,7 +607,7 @@ public class MessaginActivity extends AppCompatActivity implements GetMessageAda
     }
 
 
-    private void sendMessage(MessageModel messageModel) {
+    private void sendMessage(final MessageModel messageModel) {
         Call<MessageResponse> sendMessageCall = new RestClient().getApiService().sendMessage(messageModel);
 
         sendMessageCall.enqueue(new Callback<MessageResponse>() {
@@ -607,6 +616,8 @@ public class MessaginActivity extends AppCompatActivity implements GetMessageAda
                 if (response.body() != null) {
                     Toast.makeText(MessaginActivity.this, response.body().getInfo(), Toast.LENGTH_SHORT).show();
 
+                    date = new Date();
+                    messagesList.add(new Datum(username,recipent,"textInsider",messageModel.getData(),date.toString()));
                 }
             }
 

@@ -95,7 +95,7 @@ public class MenuActivity extends AppCompatActivity implements RecyclerAdapter.O
             backupMap = new ObservableArrayMap<>();
             msgBackzpList=new ArrayList<Datum>();
             backupList=new ObservableArrayList<String>();
-            getFriends(new User(username, password));
+
 
             backupList.addOnListChangedCallback(new ObservableList.OnListChangedCallback<ObservableList<String>>() {
                 @Override
@@ -132,9 +132,22 @@ public class MenuActivity extends AppCompatActivity implements RecyclerAdapter.O
             backupMap.addOnMapChangedCallback(new ObservableMap.OnMapChangedCallback<ObservableMap<String, List<Datum>>, String, List<Datum>>() {
                 @Override
                 public void onMapChanged(ObservableMap<String, List<Datum>> sender, String key) {
-
+                    adapter = new RecyclerAdapter(backupList, getApplicationContext(), MenuActivity.this,backupMap);
+                    recyclerView.setAdapter(adapter);
                 }
             });
+            try{
+                backupList.addAll(Splashscreen.getBackupList());
+                for(String contact:backupList)
+                {
+                    backupMap.put(contact,Splashscreen.getBackupMap().get(contact));
+                }
+            }
+         catch(Exception e)
+         {
+             Toast.makeText(MenuActivity.this,"Reloadig the contacts, please wait", Toast.LENGTH_LONG).show();
+             getFriends(new User(username, password));
+         }
             addingButton = (FloatingActionButton) findViewById(R.id.addingButton);
             addingButton.setOnClickListener(new View.OnClickListener() {
 

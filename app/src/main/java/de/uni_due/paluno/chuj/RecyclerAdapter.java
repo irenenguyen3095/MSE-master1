@@ -87,13 +87,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
                     stringDatum = stringDatum.substring(0, index + 1);
                     String messageSender = backupMap.get(contact).get(indexListInside).getSender();
                     if (messageSender.equals(contact)) {
-                        if (backupMap.get(contact).get(indexListInside).getMimetype().equals("file")) {
+                        if (backupMap.get(contact).get(indexListInside).getMimetype().equals("file")||backupMap.get(contact).get(indexListInside).getMimetype().equals("fileInsider")) {
                             holder.secondLine.setText(stringDatum + ", " + messageSender + ": Picture");
                         } else {
                             holder.secondLine.setText(stringDatum + ", " + messageSender + ": " + backupMap.get(contact).get(indexListInside).getData());
                         }
                     } else {
-                        if (backupMap.get(contact).get(indexListInside).getMimetype().equals("file")) {
+                        if (backupMap.get(contact).get(indexListInside).getMimetype().equals("file")||backupMap.get(contact).get(indexListInside).getMimetype().equals("fileInsider")) {
                             holder.secondLine.setText(stringDatum + ":Picture ");
                         } else {
                             holder.secondLine.setText(stringDatum + ": " + backupMap.get(contact).get(indexListInside).getData());

@@ -61,4 +61,11 @@ public class Datum {
         this.dateTime = dateTime;
     }
 
+    public Datum(String sender, String recipient, String mimetype, String data, String dateTime) {
+        this.sender = sender;
+        this.recipient = recipient;
+        this.mimetype = mimetype;
+        this.data = data;
+        this.dateTime = dateTime;
+    }
 }

@@ -93,15 +93,31 @@ public class GetMessageAdapter extends RecyclerView.Adapter {
 
         String message = list.get(i).getData();
         sender= list.get(i).getSender();
-        stringDatum = list.get(i).getDateTime();
-        try {
-            time = formatter.parse(stringDatum);
-        } catch (java.text.ParseException e) {
-            e.printStackTrace();
+        if(list.get(i).getDateTime()!=null)
+        {
+            if(list.get(i).getMimetype().equals("fileInsider")||list.get(i).getMimetype().equals("textInsider"))
+            {
+                stringDatum = list.get(i).getDateTime();
+            }
+            else
+            {
+                stringDatum = list.get(i).getDateTime();
+                try {
+                    time = formatter.parse(stringDatum);
+                } catch (java.text.ParseException e) {
+                    e.printStackTrace();
+                }
+                stringDatum = time.toString();
+
+            }
+            int index = stringDatum.indexOf("MESZ");
+            stringDatum = stringDatum.substring(0, index+1);
+
         }
-        stringDatum = time.toString();
-        int index = stringDatum.indexOf("T");
-        stringDatum = stringDatum.substring(0, index+1);
+        else{
+
+        }
+
         recipent = list.get(i).getRecipient();
 
         switch (viewHolder.getItemViewType()) {
@@ -147,7 +163,7 @@ public class GetMessageAdapter extends RecyclerView.Adapter {
                 //int height= ((TheirPictureViewHolder) viewHolder).img_recived.getHeight();
                 //int width= ((TheirPictureViewHolder) viewHolder).img_recived.getWidth();
                 ((TheirPictureViewHolder) viewHolder).img_recived.setImageBitmap(decodedByte1);
-                ((TheirPictureViewHolder) viewHolder).theirname.setText(sender+"         sent on:" + stringDatum);
+                ((TheirPictureViewHolder) viewHolder).theirname.setText(recipent+", sent on: "+stringDatum);
                 break;
 
             case VIEW_TYPE_PICTURE_SENT:
@@ -189,7 +205,7 @@ public class GetMessageAdapter extends RecyclerView.Adapter {
                 return VIEW_TYPE_MESSAGE_RECEIVED;
             }
 
-        } else if (list.get(position).getMimetype().equals("file")){
+        } else if (list.get(position).getMimetype().equals("file")||list.get(position).getMimetype().equals("fileInsider")){
             if(sender.equals(senderName)){
                 return VIEW_TYPE_PICTURE_SENT;
             }
