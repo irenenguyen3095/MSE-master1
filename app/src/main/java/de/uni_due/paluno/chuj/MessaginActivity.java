@@ -13,8 +13,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -39,11 +41,15 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -56,6 +62,7 @@ import de.uni_due.paluno.chuj.Models.GetMessagesAntwort;
 import de.uni_due.paluno.chuj.Models.MessageModel;
 import de.uni_due.paluno.chuj.Models.MessageResponse;
 import de.uni_due.paluno.chuj.Models.RemoveFriend;
+import id.zelory.compressor.Compressor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -323,9 +330,13 @@ public class MessaginActivity extends AppCompatActivity implements GetMessageAda
         if(requestCode == 1995 && resultCode == RESULT_OK) {
 
             Uri file = data.getData(); //The uri with the location of the file
+            File resumeFile= new File(file.getPath());
             InputStream inputStream = null;
             try {
-                inputStream = getContentResolver().openInputStream(file);
+                File compressedImageFile = new Compressor(MessaginActivity.this).compressToFile(resumeFile);
+
+                //inputStream = getContentResolver().openInputStream();
+                inputStream= new FileInputStream(compressedImageFile);
                 byte[] inputData = getBytes(inputStream);
                 //encode bse64
                 String encode = Base64.encodeToString(inputData,12);
@@ -344,16 +355,9 @@ public class MessaginActivity extends AppCompatActivity implements GetMessageAda
     }
 
     public byte[] getBytes(InputStream inputStream) throws IOException {
-       /* Bitmap bm = BitmapFactory.decodeStream(inputStream);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.PNG,100,baos);
-        byte[] b = baos.toByteArray();
-        return b;*/
-        //Base64.de
-
 
         ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
-        int bufferSize = 1024;
+        int bufferSize = 2048*3;
         byte[] buffer = new byte[bufferSize];
 
         int len = 0;
@@ -361,6 +365,11 @@ public class MessaginActivity extends AppCompatActivity implements GetMessageAda
             byteBuffer.write(buffer, 0, len);
         }
         return byteBuffer.toByteArray();
+
+
+
+
+
     }
 
     private void sendFile(MessageModel fileModel){
