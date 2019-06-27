@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.databinding.ObservableArrayList;
+import android.databinding.ObservableArrayMap;
 import android.databinding.ObservableList;
 import android.databinding.ObservableMap;
 import android.graphics.Bitmap;
@@ -102,6 +103,7 @@ public class MessaginActivity extends AppCompatActivity implements GetMessageAda
     private FloatingActionButton floatSendFile;
     private boolean openfloat = false;
     private Date date;
+    private static ObservableMap<String,List<Datum>> backupMap;
 
 
 
@@ -120,7 +122,7 @@ public class MessaginActivity extends AppCompatActivity implements GetMessageAda
 
         preferences = getSharedPreferences("login", MODE_PRIVATE);
 
-        Status.setMsgStatus(true);
+
         recyclerView = (RecyclerView) findViewById(R.id.reyclerview_message_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(MessaginActivity.this));
 
@@ -230,15 +232,24 @@ public class MessaginActivity extends AppCompatActivity implements GetMessageAda
                     adapter = new GetMessageAdapter(messagesList, getApplicationContext(), username,MessaginActivity.this);
                     recyclerView.setAdapter(adapter);
                     recyclerView.scrollToPosition(messagesList.size() - 1);
-                    Map<String,List<Datum>> backupMap;
-                    backupMap=MenuActivity.getBackupMap();
-                    backupMap.put(recipent,messagesList);
+
+
+
+                    ObservableMap<String,List<Datum>> newBackup;
+                    newBackup=new ObservableArrayMap<>();
+                    newBackup=MenuActivity.getBackupMap();
+                    newBackup.put(recipent,messagesList);
+                    MenuActivity.setBackupMap(newBackup);
+
+
+
+
 
                 }
 
                 @Override
                 public void onItemRangeMoved(ObservableList<Datum> sender, int fromPosition, int toPosition, int itemCount) {
-                    ;
+
 
                 }
 
@@ -440,6 +451,12 @@ public class MessaginActivity extends AppCompatActivity implements GetMessageAda
 
         if (ConnectivityHelper.isConnectedToNetwork(getApplicationContext())) {
             //Show the connected screen
+
+            if(Status.getNotificationStatus()==true)
+            {
+                getMesseages( new GetMessages(username, password, recipent));
+                Status.setNotificationStatus(false);
+            }
         } else{
             Toast.makeText(MessaginActivity.this, "no connection", Toast.LENGTH_SHORT).show();
 

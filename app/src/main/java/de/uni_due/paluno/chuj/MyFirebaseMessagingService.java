@@ -39,6 +39,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         public void onMessageReceived(RemoteMessage remoteMessage) {
 
 
+            Status.setNotificationStatus(true);
                 prefrences = getSharedPreferences("login", MODE_PRIVATE);
                 username = prefrences.getString("username", "").toString();
                 msgStatus = Status.getMsgStatus();

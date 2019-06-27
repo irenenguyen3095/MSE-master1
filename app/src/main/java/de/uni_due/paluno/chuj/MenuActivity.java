@@ -81,8 +81,9 @@ public class MenuActivity extends AppCompatActivity implements RecyclerAdapter.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
-        Status.setMenuStatus(true);
 
+
+        Status.setStatusForMap(true);
         recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(MenuActivity.this));
         list = new ArrayList<String>();
@@ -132,15 +133,29 @@ public class MenuActivity extends AppCompatActivity implements RecyclerAdapter.O
             backupMap.addOnMapChangedCallback(new ObservableMap.OnMapChangedCallback<ObservableMap<String, List<Datum>>, String, List<Datum>>() {
                 @Override
                 public void onMapChanged(ObservableMap<String, List<Datum>> sender, String key) {
-                    adapter = new RecyclerAdapter(backupList, getApplicationContext(), MenuActivity.this,backupMap);
-                    recyclerView.setAdapter(adapter);
+
+                    if(Status.getStatusForMap()==true)
+                    {
+                        Toast.makeText(MenuActivity.this,"Inside map", Toast.LENGTH_LONG).show();
+                        recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(MenuActivity.this));
+                        adapter = new RecyclerAdapter(backupList, getApplicationContext(), MenuActivity.this,backupMap);
+                        recyclerView.setAdapter(adapter);
+                    }
+
+
+
+
+
                 }
             });
             try{
                 backupList.addAll(Splashscreen.getBackupList());
                 for(String contact:backupList)
                 {
-                    backupMap.put(contact,Splashscreen.getBackupMap().get(contact));
+
+                        backupMap.put(contact,Splashscreen.getBackupMap().get(contact));
+
                 }
             }
          catch(Exception e)
@@ -148,6 +163,7 @@ public class MenuActivity extends AppCompatActivity implements RecyclerAdapter.O
              Toast.makeText(MenuActivity.this,"Reloadig the contacts, please wait", Toast.LENGTH_LONG).show();
              getFriends(new User(username, password));
          }
+
             addingButton = (FloatingActionButton) findViewById(R.id.addingButton);
             addingButton.setOnClickListener(new View.OnClickListener() {
 
@@ -207,11 +223,14 @@ public class MenuActivity extends AppCompatActivity implements RecyclerAdapter.O
     {
         super.onPause();
         Status.setMenuStatus(false);
+        Status.setStatusForMap(false);
     }
     @Override
     public void onStop()
     {
+
         super.onStop();
+        Status.setStatusForMap(false);
         Status.setMenuStatus(false);
     }
     public void getFriends(User user) {
@@ -295,7 +314,7 @@ public class MenuActivity extends AppCompatActivity implements RecyclerAdapter.O
         });
 
     }
-    public static  Map<String,List<Datum>>getBackupMap()
+    public static  ObservableMap<String,List<Datum>>getBackupMap()
     {
         return backupMap;
     }
@@ -304,6 +323,7 @@ public class MenuActivity extends AppCompatActivity implements RecyclerAdapter.O
 
         super.onRestart();
         Status.setMenuStatus(true);
+        Status.setStatusForMap(true);
 
 
         if (ConnectivityHelper.isConnectedToNetwork(getApplicationContext())) {
@@ -364,9 +384,8 @@ public class MenuActivity extends AppCompatActivity implements RecyclerAdapter.O
 
     }
 
-    public void setBackupMap(ObservableMap<String,List<Datum>> backupMap)
-    {
-        this.backupMap=backupMap;
-    }
 
+    public static void setBackupMap(ObservableMap<String, List<Datum>> backupMap) {
+        MenuActivity.backupMap = backupMap;
+    }
 }

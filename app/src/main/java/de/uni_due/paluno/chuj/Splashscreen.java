@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.databinding.ObservableArrayList;
+import android.databinding.ObservableArrayMap;
 import android.databinding.ObservableMap;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +21,7 @@ import de.uni_due.paluno.chuj.Models.ConnectivityHelper;
 import de.uni_due.paluno.chuj.Models.Datum;
 import de.uni_due.paluno.chuj.Models.GetMessages;
 import de.uni_due.paluno.chuj.Models.GetMessagesAntwort;
+import de.uni_due.paluno.chuj.Models.Status;
 import de.uni_due.paluno.chuj.Models.User;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,7 +36,7 @@ public class Splashscreen extends AppCompatActivity {
     private String username;
     private String password;
     private static List<Datum> msgBackzpList;
-    private static Map<String, List<Datum>> backupMap;
+    private static ObservableArrayMap<String, List<Datum>> backupMap;
     SharedPreferences prefrences;
 
 
@@ -59,9 +61,18 @@ public class Splashscreen extends AppCompatActivity {
 
 
             if (ConnectivityHelper.isConnectedToNetwork(getApplicationContext())) {
-                backupMap = new HashMap<String, List<Datum>>();
+                backupMap = new ObservableArrayMap<String, List<Datum>>();
                 backupList = new ArrayList<String>();
                 msgBackzpList = new ArrayList<Datum>();
+                backupMap.addOnMapChangedCallback(new ObservableMap.OnMapChangedCallback<ObservableMap<String, List<Datum>>, String, List<Datum>>() {
+                    @Override
+                    public void onMapChanged(ObservableMap<String, List<Datum>> sender, String key) {
+                     if(Status.getMenuStatus()==true)
+                     {
+                         MenuActivity.setBackupMap(backupMap);
+                     }
+                    }
+                });
 
                 getFriends(new User(username, password));
 
@@ -76,7 +87,7 @@ public class Splashscreen extends AppCompatActivity {
 
 
                     }
-                }, 4 * 1000);
+                }, 5 * 1000);
 
             }
             else
@@ -208,11 +219,11 @@ public class Splashscreen extends AppCompatActivity {
         Splashscreen.msgBackzpList = msgBackzpList;
     }
 
-    public static Map<String, List<Datum>> getBackupMap() {
+    public static ObservableArrayMap<String, List<Datum>> getBackupMap() {
         return backupMap;
     }
 
-    public static void setBackupMap(Map<String, List<Datum>> backupMap) {
+    public static void setBackupMap(ObservableArrayMap<String, List<Datum>> backupMap) {
         Splashscreen.backupMap = backupMap;
     }
 }
