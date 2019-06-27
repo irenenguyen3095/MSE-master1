@@ -361,4 +361,11 @@ public class GetMessageAdapter extends RecyclerView.Adapter {
         void onNoteClick(int position);
     }
 
+    public List<Datum> getList() {
+        return list;
+    }
+
+    public void setList(List<Datum> list) {
+        this.list = list;
+    }
 }

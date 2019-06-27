@@ -113,7 +113,7 @@ public class MenuActivity extends AppCompatActivity implements RecyclerAdapter.O
                 @Override
                 public void onItemRangeInserted(ObservableList<String> sender, int positionStart, int itemCount) {
 
-                    adapter = new RecyclerAdapter(backupList, getApplicationContext(), MenuActivity.this);
+                    adapter = new RecyclerAdapter(backupList, getApplicationContext(), MenuActivity.this,backupMap);
                     recyclerView.setAdapter(adapter);
                 }
 
@@ -125,7 +125,7 @@ public class MenuActivity extends AppCompatActivity implements RecyclerAdapter.O
                 @Override
                 public void onItemRangeRemoved(ObservableList<String> sender, int positionStart, int itemCount) {
                     ;
-                    adapter = new RecyclerAdapter(backupList, getApplicationContext(), MenuActivity.this);
+                    adapter = new RecyclerAdapter(backupList, getApplicationContext(), MenuActivity.this,backupMap);
                     recyclerView.setAdapter(adapter);
                 }
             });
@@ -137,10 +137,10 @@ public class MenuActivity extends AppCompatActivity implements RecyclerAdapter.O
                     if(Status.getStatusForMap()==true)
                     {
                         Toast.makeText(MenuActivity.this,"Inside map", Toast.LENGTH_LONG).show();
-                        recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
-                        recyclerView.setLayoutManager(new LinearLayoutManager(MenuActivity.this));
-                        adapter = new RecyclerAdapter(backupList, getApplicationContext(), MenuActivity.this,backupMap);
-                        recyclerView.setAdapter(adapter);
+
+                        adapter.setBackupMap(backupMap);
+                        adapter.notifyDataSetChanged();
+
                     }
 
 

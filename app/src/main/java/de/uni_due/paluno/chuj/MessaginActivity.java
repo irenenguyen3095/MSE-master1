@@ -229,11 +229,26 @@ public class MessaginActivity extends AppCompatActivity implements GetMessageAda
 
                 @Override
                 public void onItemRangeInserted(ObservableList<Datum> sender, int positionStart, int itemCount) {
-                    adapter = new GetMessageAdapter(messagesList, getApplicationContext(), username,MessaginActivity.this);
-                    recyclerView.setAdapter(adapter);
-                    recyclerView.scrollToPosition(messagesList.size() - 1);
 
-
+                    if(Status.getMsgStatus()==true&&adapter!=null)
+                    {
+                        adapter.setList(messagesList);
+                        adapter.notifyDataSetChanged();
+                        recyclerView.scrollToPosition(messagesList.size() - 1);
+                    }
+                    else
+                        if(adapter!=null)
+                        {
+                            adapter.setList(messagesList);
+                            adapter.notifyDataSetChanged();
+                            recyclerView.scrollToPosition(messagesList.size() - 1);
+                        }
+                        else
+                    {
+                        adapter = new GetMessageAdapter(messagesList, getApplicationContext(), username,MessaginActivity.this);
+                        recyclerView.setAdapter(adapter);
+                        recyclerView.scrollToPosition(messagesList.size() - 1);
+                    }
 
                     ObservableMap<String,List<Datum>> newBackup;
                     newBackup=new ObservableArrayMap<>();

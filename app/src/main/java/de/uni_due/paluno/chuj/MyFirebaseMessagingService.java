@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
+import android.os.Handler;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Base64;
@@ -57,9 +58,17 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
             if(isBase64(preview)){
                 showPreview=sender+" sent you a picture!";
-            } else{
-                showPreview=preview;
-            }
+            } else
+
+                if(preview.contains("|"))
+                {
+                    showPreview=sender+"´s location";
+
+                }
+                else
+                {
+                    showPreview=preview;
+                }
 
            // Toast.makeText(this,loginStatus+"",Toast.LENGTH_SHORT).show();
                if (loginStatus == true) {
@@ -71,6 +80,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                    }
 
                    else
+                       if(Status.getMenuStatus()==true)
+                       {
+                           MessaginActivity.getMesseages( new GetMessages(username, password, sender));
+                           showNotificationInMenu(showPreview,sender);
+
+                       }
+                       else
                    {
                        showNotification(remoteMessage.getData().get("preview"), sender);
                    }
@@ -87,6 +103,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Intent i = new Intent(this,MessaginActivity.class);
             i.putExtra("recipent",recipent);
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            MessaginActivity.getMesseages( new GetMessages(username, password, recipent));
 
             PendingIntent pendingIntent = PendingIntent.getActivity(this,0,i,PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -129,8 +146,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private void showNotificationInMenu(String message, String recipent) {
 
 
-
-        Intent i = new Intent(this,MenuActivity.class);
+        Intent i = new Intent(this,MessaginActivity.class);
         i.putExtra("recipent",recipent);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

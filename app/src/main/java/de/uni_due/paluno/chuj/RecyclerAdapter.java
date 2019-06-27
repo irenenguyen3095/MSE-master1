@@ -89,13 +89,26 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
                     if (messageSender.equals(contact)) {
                         if (backupMap.get(contact).get(indexListInside).getMimetype().equals("file")||backupMap.get(contact).get(indexListInside).getMimetype().equals("fileInsider")) {
                             holder.secondLine.setText(stringDatum + ", " + messageSender + ": Picture");
-                        } else {
-                            holder.secondLine.setText(stringDatum + ", " + messageSender + ": " + backupMap.get(contact).get(indexListInside).getData());
-                        }
+                        } else
+                            if(backupMap.get(contact).get(indexListInside).getMimetype().equals("gps"))
+                            {
+                                holder.secondLine.setText(stringDatum + ", " + messageSender + ":´s location");
+                            }
+                            else
+                            {
+                                holder.secondLine.setText(stringDatum + ", " + messageSender + ": " + backupMap.get(contact).get(indexListInside).getData());
+                            }
+
                     } else {
                         if (backupMap.get(contact).get(indexListInside).getMimetype().equals("file")||backupMap.get(contact).get(indexListInside).getMimetype().equals("fileInsider")) {
                             holder.secondLine.setText(stringDatum + ":Picture ");
-                        } else {
+                        } else
+                        if(backupMap.get(contact).get(indexListInside).getMimetype().equals("gps"))
+                        {
+                            holder.secondLine.setText(stringDatum + ": my location");
+                        }
+                        else
+                            {
                             holder.secondLine.setText(stringDatum + ": " + backupMap.get(contact).get(indexListInside).getData());
                         }
                     }
@@ -163,5 +176,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         void onNoteClick(int position);
     }
 
+    public static Map<String, List<Datum>> getBackupMap() {
+        return backupMap;
+    }
 
+    public static void setBackupMap(Map<String, List<Datum>> backupMap) {
+        RecyclerAdapter.backupMap = backupMap;
+    }
 }
