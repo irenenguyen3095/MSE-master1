@@ -35,8 +35,7 @@
         <android.support.design.widget.TextInputEditText
             android:id="@+id/username_input_su"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="hint" />
+            android:layout_height="wrap_content" />
     </android.support.design.widget.TextInputLayout>
 
     <TextView
@@ -67,7 +66,6 @@
             android:id="@+id/pw1_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="hint"
             android:inputType="textWebPassword" />
     </android.support.design.widget.TextInputLayout>
 
@@ -87,7 +85,6 @@
             android:id="@+id/pw2_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="hint"
             android:inputType="textWebPassword" />
     </android.support.design.widget.TextInputLayout>
 
