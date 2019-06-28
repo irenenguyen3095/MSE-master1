@@ -163,7 +163,7 @@ public class GetMessageAdapter extends RecyclerView.Adapter {
                 //int height= ((TheirPictureViewHolder) viewHolder).img_recived.getHeight();
                 //int width= ((TheirPictureViewHolder) viewHolder).img_recived.getWidth();
                 ((TheirPictureViewHolder) viewHolder).img_recived.setImageBitmap(decodedByte1);
-                ((TheirPictureViewHolder) viewHolder).theirname.setText(recipent+", sent on: "+stringDatum);
+                ((TheirPictureViewHolder) viewHolder).theirname.setText(sender+", sent on: "+stringDatum);
                 break;
 
             case VIEW_TYPE_PICTURE_SENT:

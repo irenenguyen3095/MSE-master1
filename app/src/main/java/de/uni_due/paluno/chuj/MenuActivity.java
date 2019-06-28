@@ -101,13 +101,16 @@ public class MenuActivity extends AppCompatActivity implements RecyclerAdapter.O
             backupList.addOnListChangedCallback(new ObservableList.OnListChangedCallback<ObservableList<String>>() {
                 @Override
                 public void onChanged(ObservableList<String> sender) {
+                    adapter = new RecyclerAdapter(backupList, getApplicationContext(), MenuActivity.this,backupMap);
+                    recyclerView.setAdapter(adapter);
 
                 }
 
                 @Override
                 public void onItemRangeChanged(ObservableList<String> sender, int positionStart, int itemCount) {
 
-
+                    adapter = new RecyclerAdapter(backupList, getApplicationContext(), MenuActivity.this,backupMap);
+                    recyclerView.setAdapter(adapter);
                 }
 
                 @Override
@@ -119,12 +122,13 @@ public class MenuActivity extends AppCompatActivity implements RecyclerAdapter.O
 
                 @Override
                 public void onItemRangeMoved(ObservableList<String> sender, int fromPosition, int toPosition, int itemCount) {
-
+                    adapter = new RecyclerAdapter(backupList, getApplicationContext(), MenuActivity.this,backupMap);
+                    recyclerView.setAdapter(adapter);
                 }
 
                 @Override
                 public void onItemRangeRemoved(ObservableList<String> sender, int positionStart, int itemCount) {
-                    ;
+
                     adapter = new RecyclerAdapter(backupList, getApplicationContext(), MenuActivity.this,backupMap);
                     recyclerView.setAdapter(adapter);
                 }
@@ -136,7 +140,7 @@ public class MenuActivity extends AppCompatActivity implements RecyclerAdapter.O
 
                     if(Status.getStatusForMap()==true)
                     {
-                        Toast.makeText(MenuActivity.this,"Inside map", Toast.LENGTH_LONG).show();
+
 
                         adapter.setBackupMap(backupMap);
                         adapter.notifyDataSetChanged();
@@ -186,7 +190,7 @@ public class MenuActivity extends AppCompatActivity implements RecyclerAdapter.O
 
             Intent intent = getIntent();
 
-            Toast.makeText(MenuActivity.this, "Welcome " + username, Toast.LENGTH_SHORT).show();
+
 
 
 
@@ -387,5 +391,13 @@ public class MenuActivity extends AppCompatActivity implements RecyclerAdapter.O
 
     public static void setBackupMap(ObservableMap<String, List<Datum>> backupMap) {
         MenuActivity.backupMap = backupMap;
+    }
+
+    public static ObservableArrayList<String> getBackupList() {
+        return backupList;
+    }
+
+    public static void setBackupList(ObservableArrayList<String> backupList) {
+        MenuActivity.backupList = backupList;
     }
 }

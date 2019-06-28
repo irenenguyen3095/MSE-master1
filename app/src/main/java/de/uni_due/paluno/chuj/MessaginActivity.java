@@ -590,6 +590,7 @@ public class MessaginActivity extends AppCompatActivity implements GetMessageAda
                         public void run() {
 
 
+
                             Intent intentDeleteUser = new Intent(MessaginActivity.this, MenuActivity.class);
                             startActivity(intentDeleteUser);
 
@@ -597,7 +598,7 @@ public class MessaginActivity extends AppCompatActivity implements GetMessageAda
 
 
                         }
-                    }, 1500);
+                    }, 500);
 
 
                     return true;
@@ -721,7 +722,9 @@ public class MessaginActivity extends AppCompatActivity implements GetMessageAda
                 if (response.body() != null) {
                     Toast.makeText(MessaginActivity.this, "Friend deleted", Toast.LENGTH_SHORT).show();
 
-
+                    List<String> backupList = new ArrayList<>();
+                    backupList= Splashscreen.getBackupList();
+                    backupList.remove(recipent);
                 }
             }
 

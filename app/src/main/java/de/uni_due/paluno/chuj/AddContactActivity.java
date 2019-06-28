@@ -6,6 +6,10 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.databinding.ObservableArrayList;
+import android.databinding.ObservableArrayMap;
+import android.databinding.ObservableMap;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -16,8 +20,16 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import de.uni_due.paluno.chuj.Models.AddFriend;
 import de.uni_due.paluno.chuj.Models.Anmeldungsantwort;
+import de.uni_due.paluno.chuj.Models.ConnectivityHelper;
+import de.uni_due.paluno.chuj.Models.Datum;
+import de.uni_due.paluno.chuj.Models.GetMessages;
+import de.uni_due.paluno.chuj.Models.GetMessagesAntwort;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -29,6 +41,9 @@ private SharedPreferences prefrences;
 private Activity activity;
 private String password;
 private String username;
+private static List<Datum> msgBackzpList;
+private static List<String> backupList;
+private static ObservableMap<String,List<Datum>> backupMap;
 
 
 
@@ -64,7 +79,17 @@ private String username;
             @Override
             public void onClick(View v) {
                 if (!addContactText.getText().toString().isEmpty() ) {
-                    addFriend(new AddFriend(username,password,addContactText.getText().toString()));   // hier wird die Methode registerUser aufgerufen
+                    addFriend(new AddFriend(username,password,addContactText.getText().toString()));// hier wird die Methode registerUser aufgerufen
+
+
+
+                            Intent intent = new Intent(AddContactActivity.this,MenuActivity.class);
+
+                            startActivity(intent);
+                            activity.finishAffinity();
+
+
+
 
                 } else {
                     Toast.makeText(AddContactActivity.this, "Gebe Benutzerdaten ein", Toast.LENGTH_SHORT).show();
@@ -107,12 +132,14 @@ private String username;
 
                             Toast.makeText(AddContactActivity.this, response.body().getInfo(), Toast.LENGTH_SHORT).show();
 
+                            ObservableArrayList<String> backupList = new ObservableArrayList<>();
 
-                            Intent intent = new Intent(AddContactActivity.this,MenuActivity.class);
+                           backupList=MenuActivity.getBackupList();
+                           backupList.add(addContactText.getText().toString());
+                           Splashscreen.getBackupMap().put(addContactText.getText().toString(),null);
 
 
-                            startActivity(intent);
-                            activity.finish();
+
                             break;
 
                         case (0):
@@ -146,4 +173,5 @@ private String username;
         startActivity(intent);
         return true;
     }
+
 }
