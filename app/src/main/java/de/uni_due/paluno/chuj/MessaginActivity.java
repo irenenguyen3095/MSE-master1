@@ -388,24 +388,42 @@ public class MessaginActivity extends AppCompatActivity implements GetMessageAda
 
         Bitmap bmp = BitmapFactory.decodeStream(inputStream);
 
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bmp.compress(Bitmap.CompressFormat.JPEG, 50, stream);
+        Bitmap scaledBmp= getResizedBitmap(bmp, 800);
 
-        int bufferSize = 2048*3;
+        Log.i("Width", String.valueOf(scaledBmp.getWidth()));
+        Log.i("Height", String.valueOf(scaledBmp.getHeight()));
+        scaledBmp.compress(Bitmap.CompressFormat.JPEG, 100, byteBuffer);
+
+        //bmp.compress(Bitmap.CompressFormat.JPEG, 50, stream);
+
+        int bufferSize = 1024*3;
         byte[] buffer = new byte[bufferSize];
 
         int len = 0;
         while ((len = inputStream.read(buffer)) != -1) {
-            stream.write(buffer, 0, len);
+            byteBuffer.write(buffer, 0, len);
         }
 
-        return stream.toByteArray();
-
-
+        return byteBuffer.toByteArray();
 
 
 
     }
+    public Bitmap getResizedBitmap(Bitmap image, int maxSize) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        float bitmapRatio = (float)width / (float) height;
+        if (bitmapRatio > 1) {
+            width = maxSize;
+            height = (int) (width / bitmapRatio);
+        } else {
+            height = maxSize;
+            width = (int) (height * bitmapRatio);
+        }
+        return Bitmap.createScaledBitmap(image, width, height, true);
+    }
+
 
     private void sendFile(final MessageModel fileModel){
         Call<MessageResponse> sendLocationCall = new RestClient().getApiService().sendMessage(fileModel);
