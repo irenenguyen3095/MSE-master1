@@ -101,36 +101,77 @@ public class MenuActivity extends AppCompatActivity implements RecyclerAdapter.O
             backupList.addOnListChangedCallback(new ObservableList.OnListChangedCallback<ObservableList<String>>() {
                 @Override
                 public void onChanged(ObservableList<String> sender) {
-                    adapter = new RecyclerAdapter(backupList, getApplicationContext(), MenuActivity.this,backupMap);
-                    recyclerView.setAdapter(adapter);
+                    if(adapter!=null)
+                    {
+                        adapter.setList(backupList);
+                        adapter.notifyDataSetChanged();
+                    }
+                    else
+                    {
+                        adapter = new RecyclerAdapter(backupList, getApplicationContext(), MenuActivity.this);
+                        recyclerView.setAdapter(adapter);
+                    };
 
                 }
 
                 @Override
                 public void onItemRangeChanged(ObservableList<String> sender, int positionStart, int itemCount) {
 
-                    adapter = new RecyclerAdapter(backupList, getApplicationContext(), MenuActivity.this,backupMap);
-                    recyclerView.setAdapter(adapter);
+                    if(adapter!=null)
+                    {
+                        adapter.setList(backupList);
+                        adapter.notifyDataSetChanged();
+                    }
+                    else
+                    {
+                        adapter = new RecyclerAdapter(backupList, getApplicationContext(), MenuActivity.this);
+                        recyclerView.setAdapter(adapter);
+                    }
                 }
 
                 @Override
                 public void onItemRangeInserted(ObservableList<String> sender, int positionStart, int itemCount) {
 
-                    adapter = new RecyclerAdapter(backupList, getApplicationContext(), MenuActivity.this,backupMap);
-                    recyclerView.setAdapter(adapter);
+                    if(adapter!=null)
+                    {
+                        adapter.setList(backupList);
+                        adapter.notifyDataSetChanged();
+                    }
+                    else
+                    {
+                        adapter = new RecyclerAdapter(backupList, getApplicationContext(), MenuActivity.this);
+                        recyclerView.setAdapter(adapter);
+                    }
+
                 }
 
                 @Override
                 public void onItemRangeMoved(ObservableList<String> sender, int fromPosition, int toPosition, int itemCount) {
-                    adapter = new RecyclerAdapter(backupList, getApplicationContext(), MenuActivity.this,backupMap);
-                    recyclerView.setAdapter(adapter);
+                    if(adapter!=null)
+                    {
+                        adapter.setList(backupList);
+                        adapter.notifyDataSetChanged();
+                    }
+                    else
+                    {
+                        adapter = new RecyclerAdapter(backupList, getApplicationContext(), MenuActivity.this);
+                        recyclerView.setAdapter(adapter);
+                    }
                 }
 
                 @Override
                 public void onItemRangeRemoved(ObservableList<String> sender, int positionStart, int itemCount) {
 
-                    adapter = new RecyclerAdapter(backupList, getApplicationContext(), MenuActivity.this,backupMap);
-                    recyclerView.setAdapter(adapter);
+                    if(adapter!=null)
+                    {
+                        adapter.setList(backupList);
+                        adapter.notifyDataSetChanged();
+                    }
+                    else
+                    {
+                        adapter = new RecyclerAdapter(backupList, getApplicationContext(), MenuActivity.this);
+                        recyclerView.setAdapter(adapter);
+                    }
                 }
             });
 
@@ -142,8 +183,9 @@ public class MenuActivity extends AppCompatActivity implements RecyclerAdapter.O
                     {
 
 
-                        adapter.setBackupMap(backupMap);
-                        adapter.notifyDataSetChanged();
+                        adapter = new RecyclerAdapter(backupList, getApplicationContext(), MenuActivity.this,backupMap);
+                        recyclerView.setAdapter(adapter);
+                    };
 
                     }
 
@@ -151,8 +193,8 @@ public class MenuActivity extends AppCompatActivity implements RecyclerAdapter.O
 
 
 
-                }
-            });
+                });
+
             try{
                 backupList.addAll(Splashscreen.getBackupList());
                 for(String contact:backupList)

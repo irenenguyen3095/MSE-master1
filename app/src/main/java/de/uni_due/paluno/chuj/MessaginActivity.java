@@ -598,7 +598,7 @@ public class MessaginActivity extends AppCompatActivity implements GetMessageAda
 
 
                         }
-                    }, 500);
+                    }, 1000);
 
 
                     return true;
@@ -725,6 +725,7 @@ public class MessaginActivity extends AppCompatActivity implements GetMessageAda
                     List<String> backupList = new ArrayList<>();
                     backupList= Splashscreen.getBackupList();
                     backupList.remove(recipent);
+                    Splashscreen.getBackupMap().remove(recipent);
                 }
             }
 

@@ -183,4 +183,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     public static void setBackupMap(Map<String, List<Datum>> backupMap) {
         RecyclerAdapter.backupMap = backupMap;
     }
+
+    public List<String> getList() {
+        return list;
+    }
+
+    public void setList(List<String> list) {
+        this.list = list;
+    }
 }
