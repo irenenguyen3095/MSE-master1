@@ -10,6 +10,7 @@ import android.net.ParseException;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -155,35 +156,58 @@ public class GetMessageAdapter extends RecyclerView.Adapter {
 
 
                 BitmapFactory.Options opts = new BitmapFactory.Options();
-                opts.inSampleSize = 4;
                 byte[] decodedString1 = Base64.decode(message, 12);
                 Bitmap decodedByte1 = BitmapFactory.decodeByteArray(decodedString1, 0, decodedString1.length, opts);
+                opts.inSampleSize = calculateInSampleSize(opts,800,800);
+                Log.i("sample Size", String.valueOf(calculateInSampleSize(opts,800,800)));
+                Bitmap scaled_bitmap = (Bitmap) BitmapFactory.decodeByteArray(decodedString1, 0, decodedString1.length,opts);
 
-                //ivProfilePic.setImageBitmap(Bitmap.createScaledBitmap(b, 120, 120, false));
-                //int height= ((TheirPictureViewHolder) viewHolder).img_recived.getHeight();
-                //int width= ((TheirPictureViewHolder) viewHolder).img_recived.getWidth();
-                ((TheirPictureViewHolder) viewHolder).img_recived.setImageBitmap(decodedByte1);
+                ((TheirPictureViewHolder) viewHolder).img_recived.setImageBitmap(scaled_bitmap);
                 ((TheirPictureViewHolder) viewHolder).theirname.setText(recipent+", sent on: "+stringDatum);
                 break;
 
             case VIEW_TYPE_PICTURE_SENT:
 
-
                 byte[] decodedString2 = Base64.decode(message, 12);
                 BitmapFactory.Options opts2 = new BitmapFactory.Options();
-                opts2.inSampleSize = 4;
                 Bitmap decodedByte2 = BitmapFactory.decodeByteArray(decodedString2, 0, decodedString2.length,opts2);
+                opts2.inSampleSize =  calculateInSampleSize(opts2, 800,800);
+                Log.i("sample Size", String.valueOf(calculateInSampleSize(opts2,800,800)));
+                Bitmap scaled_bitmap2 = (Bitmap) BitmapFactory.decodeByteArray(decodedString2, 0, decodedString2.length,opts2);
+
 
                 //int height2= ((myPictureViewHolder) viewHolder).img_sent.getHeight();
                 //int width2= ((myPictureViewHolder) viewHolder).img_sent.getWidth();
                 ((myPictureViewHolder) viewHolder).my_time.setText(stringDatum);
-                ((myPictureViewHolder) viewHolder).img_sent.setImageBitmap(decodedByte2);
+                ((myPictureViewHolder) viewHolder).img_sent.setImageBitmap(scaled_bitmap2);
                 break;
         }
 
 
     }
 
+    public static int calculateInSampleSize(
+            BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        // Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+            // height and width larger than the requested height and width.
+            while ((halfHeight / inSampleSize) >= reqHeight
+                    && (halfWidth / inSampleSize) >= reqWidth) {
+                inSampleSize *= 2;
+            }
+        }
+
+        return inSampleSize;
+    }
 
     public int getItemViewType(int position) {
         Datum singleMessage;
