@@ -228,7 +228,7 @@ public class GetMessageAdapter extends RecyclerView.Adapter {
         }
 
     }
-
+    /*
     public static int resizeBitmap(BitmapFactory.Options options, int targetW, int targetH) {
 
         int photoW = options.outWidth;
@@ -241,7 +241,7 @@ public class GetMessageAdapter extends RecyclerView.Adapter {
 
 
         return scaleFactor;
-    }
+    }*/
 
     public static int calculateInSampleSize(
             BitmapFactory.Options options, int reqWidth, int reqHeight) {

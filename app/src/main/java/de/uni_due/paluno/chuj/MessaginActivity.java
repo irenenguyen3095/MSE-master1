@@ -386,15 +386,15 @@ public class MessaginActivity extends AppCompatActivity implements GetMessageAda
 
         ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
 
+        //temp Bitmap with original size
         Bitmap bmp = BitmapFactory.decodeStream(inputStream);
 
-        Bitmap scaledBmp= getResizedBitmap(bmp, 800);
+        Bitmap scaledBmp= getNewBitmap(bmp, 800);
 
         Log.i("Width", String.valueOf(scaledBmp.getWidth()));
         Log.i("Height", String.valueOf(scaledBmp.getHeight()));
-        scaledBmp.compress(Bitmap.CompressFormat.JPEG, 100, byteBuffer);
 
-        //bmp.compress(Bitmap.CompressFormat.JPEG, 50, stream);
+        scaledBmp.compress(Bitmap.CompressFormat.JPEG, 100, byteBuffer);
 
         int bufferSize = 1024*3;
         byte[] buffer = new byte[bufferSize];
@@ -409,7 +409,7 @@ public class MessaginActivity extends AppCompatActivity implements GetMessageAda
 
 
     }
-    public Bitmap getResizedBitmap(Bitmap image, int maxSize) {
+    public Bitmap getNewBitmap(Bitmap image, int maxSize) {
         int width = image.getWidth();
         int height = image.getHeight();
 

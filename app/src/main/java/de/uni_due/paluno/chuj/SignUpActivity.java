@@ -54,7 +54,7 @@ public class SignUpActivity extends AppCompatActivity {
                     alert.show();
                 } else if (!pass1.equals(pass2)){
                     android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(SignUpActivity.this);
-                    builder.setMessage("Passwörter nicht passen!").setCancelable(true)
+                    builder.setMessage("Passwörter nicht übereinstimmen!").setCancelable(true)
                             .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -76,11 +76,11 @@ public class SignUpActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
     public void registerUser(User user){
         final ProgressDialog waitingDialog = new ProgressDialog(this);
-        waitingDialog.setTitle("Registierung wird duchrgefuhrt");
+        waitingDialog.setTitle("Registrierung wird duchrgefuhrt");
         waitingDialog.setMessage("Bitte warten");
         waitingDialog.show();
         final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-        alertDialog.setTitle("Registierung wird durchgefuhrt");
+        alertDialog.setTitle("Registrierung wird durchgefuhrt");
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
                 new DialogInterface.OnClickListener() {
                     @Override
@@ -109,7 +109,7 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<Anmeldungsantwort> call, Throwable t) {
 
-                alertDialog.setMessage("Registierung gescheitert  "+t.getMessage());
+                alertDialog.setMessage("Registrierung gescheitert  "+t.getMessage());
                 alertDialog.show();
             }
         });
