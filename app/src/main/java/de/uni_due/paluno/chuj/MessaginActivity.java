@@ -379,26 +379,44 @@ public class MessaginActivity extends AppCompatActivity implements GetMessageAda
 
         ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
 
+        //temp Bitmap with original size
         Bitmap bmp = BitmapFactory.decodeStream(inputStream);
 
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bmp.compress(Bitmap.CompressFormat.JPEG, 50, stream);
+        Bitmap scaledBmp= getNewBitmap(bmp, 800);
 
-        int bufferSize = 2048*3;
+        Log.i("Width", String.valueOf(scaledBmp.getWidth()));
+        Log.i("Height", String.valueOf(scaledBmp.getHeight()));
+
+        scaledBmp.compress(Bitmap.CompressFormat.JPEG, 100, byteBuffer);
+
+        int bufferSize = 1024*3;
         byte[] buffer = new byte[bufferSize];
 
         int len = 0;
         while ((len = inputStream.read(buffer)) != -1) {
-            stream.write(buffer, 0, len);
+            byteBuffer.write(buffer, 0, len);
         }
 
-        return stream.toByteArray();
-
-
+        return byteBuffer.toByteArray();
 
 
 
     }
+    public Bitmap getNewBitmap(Bitmap image, int maxSize) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        float bitmapRatio = (float)width / (float) height;
+        if (bitmapRatio > 1) {
+            width = maxSize;
+            height = (int) (width / bitmapRatio);
+        } else {
+            height = maxSize;
+            width = (int) (height * bitmapRatio);
+        }
+        return Bitmap.createScaledBitmap(image, width, height, true);
+    }
+
 
     private void sendFile(final MessageModel fileModel){
         Call<MessageResponse> sendLocationCall = new RestClient().getApiService().sendMessage(fileModel);
@@ -513,13 +531,7 @@ public class MessaginActivity extends AppCompatActivity implements GetMessageAda
 
     private void getLastLocation() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
+           //check Permission
             return;
         }
         fusedLocationProviderClient.getLastLocation().addOnCompleteListener(this, new OnCompleteListener<Location>() {
