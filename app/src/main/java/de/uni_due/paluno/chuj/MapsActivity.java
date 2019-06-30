@@ -36,7 +36,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        Toast.makeText(MapsActivity.this, latitude+"   "+longtitude, Toast.LENGTH_SHORT).show();
+
     }
 
 
@@ -76,7 +76,5 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.addMarker(new MarkerOptions().position(here));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(here, 13.5f));
 
-        Toast.makeText(MapsActivity.this, "lat"+latitude+"Long"+longtitude,
-                Toast.LENGTH_LONG).show();
     }
 }

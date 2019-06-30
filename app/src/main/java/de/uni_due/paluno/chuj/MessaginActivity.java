@@ -147,14 +147,7 @@ public class MessaginActivity extends AppCompatActivity implements GetMessageAda
                 if (ConnectivityHelper.isConnectedToNetwork(getApplicationContext())) {
 
                     getLastLocation();
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
 
-                            getMesseages(new GetMessages(username, password, recipent));;
-
-                        }
-                    },1000);
 
                 }
                 else
@@ -617,14 +610,6 @@ public class MessaginActivity extends AppCompatActivity implements GetMessageAda
                 if (ConnectivityHelper.isConnectedToNetwork(getApplicationContext())) {
 
                     getLastLocation();
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-
-                            getMesseages(new GetMessages(username, password, recipent));;
-
-                        }
-                    },1000);
 
                 }
                 else
@@ -690,7 +675,7 @@ public class MessaginActivity extends AppCompatActivity implements GetMessageAda
         });
 
     }
-    private void sendLocation(MessageModel messageModel) {
+    private void sendLocation(final MessageModel messageModel) {
         Call<MessageResponse> sendLocationCall = new RestClient().getApiService().sendMessage(messageModel);
 
         sendLocationCall.enqueue(new Callback<MessageResponse>() {
@@ -698,6 +683,7 @@ public class MessaginActivity extends AppCompatActivity implements GetMessageAda
             public void onResponse(Call<MessageResponse> call, Response<MessageResponse> response) {
                 if (response.body() != null) {
                     Toast.makeText(MessaginActivity.this, response.body().getInfo(), Toast.LENGTH_SHORT).show();
+                    getMesseages(new GetMessages(username, password, recipent));
 
                 }
             }
@@ -744,7 +730,7 @@ public class MessaginActivity extends AppCompatActivity implements GetMessageAda
         if (ConnectivityHelper.isConnectedToNetwork(getApplicationContext())) {
 
 
-            if (messagesList.get(position).getMimetype().equals("gps")) {
+            if (messagesList.get(position).getMimetype().equals("gps")||messagesList.get(position).getMimetype().equals("mapInsider")) {
 
                 int index = messagesList.get(position).getData().indexOf("|");
                 latitude = messagesList.get(position).getData().substring(0, index - 1);

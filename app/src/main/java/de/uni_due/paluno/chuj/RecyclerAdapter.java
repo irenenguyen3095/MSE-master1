@@ -103,7 +103,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
                         if (backupMap.get(contact).get(indexListInside).getMimetype().equals("file")||backupMap.get(contact).get(indexListInside).getMimetype().equals("fileInsider")) {
                             holder.secondLine.setText(stringDatum + ":Picture ");
                         } else
-                        if(backupMap.get(contact).get(indexListInside).getMimetype().equals("gps"))
+                        if(backupMap.get(contact).get(indexListInside).getMimetype().equals("gps")||backupMap.get(contact).get(indexListInside).getMimetype().equals("mapInsider"))
                         {
                             holder.secondLine.setText(stringDatum + ": my location");
                         }
@@ -116,7 +116,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
                 }
                 else
                 {
-                    holder.secondLine.setText("Write first message");
+                    holder.secondLine.setText("Click to open the conversation");
                 }
             }
         }

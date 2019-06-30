@@ -285,20 +285,17 @@ public class MainActivity extends AppCompatActivity {
                             Toast.makeText(MainActivity.this, response.body().getInfo(), Toast.LENGTH_SHORT).show();
                             userMessage = username.getText().toString();
                             changePushToken(new PushToken(username.getText().toString(),password.getText().toString(),token));
-                            getFriends(new User(username.getText().toString(), password.getText().toString()));
 
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Intent intent = new Intent(MainActivity.this,MenuActivity.class);
+
+
+                                    Intent intent = new Intent(MainActivity.this,Splashscreen.class);
                                     intent.putExtra("name", userMessage);
 
                                     startActivity(intent);
                                     activity.finish();
 
 
-                                }
-                            }, 4 * 1000);
+
 
                             Toast.makeText(MainActivity.this,"Please wait",Toast.LENGTH_SHORT).show();
                             username.setText("");

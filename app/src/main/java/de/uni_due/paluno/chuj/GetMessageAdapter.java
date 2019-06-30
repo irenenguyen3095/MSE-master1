@@ -95,7 +95,7 @@ public class GetMessageAdapter extends RecyclerView.Adapter {
         sender= list.get(i).getSender();
         if(list.get(i).getDateTime()!=null)
         {
-            if(list.get(i).getMimetype().equals("fileInsider")||list.get(i).getMimetype().equals("textInsider"))
+            if(list.get(i).getMimetype().equals("fileInsider")||list.get(i).getMimetype().equals("textInsider")||list.get(i).getMimetype().equals("mapInsider"))
             {
                 stringDatum = list.get(i).getDateTime();
             }
@@ -191,7 +191,7 @@ public class GetMessageAdapter extends RecyclerView.Adapter {
         sender = list.get(position).getSender();
 
 
-        if (list.get(position).getMimetype().equals(("gps"))){
+        if (list.get(position).getMimetype().equals(("gps"))||list.get(position).getMimetype().equals(("mapInsider"))){
             int index = list.get(position).getData().indexOf("|");
 
             lataitude = list.get(position).getData().substring(0, index - 1);

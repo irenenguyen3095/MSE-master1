@@ -1,6 +1,7 @@
 package de.uni_due.paluno.chuj;
 
 import android.app.ActivityManager;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ComponentName;
@@ -106,19 +107,43 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             MessaginActivity.getMesseages( new GetMessages(username, password, recipent));
 
             PendingIntent pendingIntent = PendingIntent.getActivity(this,0,i,PendingIntent.FLAG_UPDATE_CURRENT);
+            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            NotificationCompat.Builder builder;
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                String name = "Channel";
+                String description = "Description";
+                int importance = NotificationManager.IMPORTANCE_DEFAULT;
+                NotificationChannel channel = new NotificationChannel("id", name, importance);
+                channel.setDescription(description);
+                // Register the channel with the system; you can't change the importance
+                // or other notification behaviors after this
+
+                notificationManager.createNotificationChannel(channel);
+
+                builder =
+                        new NotificationCompat.Builder(this, "id").setAutoCancel(true)
+                                .setContentTitle("Push Notification")
+                                .setContentText(recipent+" "+message)
+                                .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
+                                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .setContentIntent(pendingIntent);
+
+            }
+            else
+            {
+                builder = new NotificationCompat.Builder(this)
+                        .setAutoCancel(true)
+                        .setContentTitle(message)
+                        .setContentText(recipent+" "+message)
+                        .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
+                        .setContentIntent(pendingIntent);
+            }
+
+            notificationManager.notify(0, builder.build());
 
 
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                    .setAutoCancel(true)
-                    .setContentTitle(message)
-                    .setContentText(recipent+" "+message)
-                    .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
-                    .setContentIntent(pendingIntent);
 
-
-            NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-
-            manager.notify(0,builder.build());
 
         }
 
