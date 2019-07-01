@@ -142,7 +142,7 @@ public class GetMessageAdapter extends RecyclerView.Adapter {
                     ((TheirViewHolder) viewHolder).theirName.setText(sender + "         sent on:" + stringDatum);
                 }else {
                     ((TheirViewHolder) viewHolder).messageBody.setText(message);
-                    ((TheirViewHolder) viewHolder).theirName.setText(sender + "         sent on:" + stringDatum);
+                    ((TheirViewHolder) viewHolder).theirName.setText(recipent + "         sent on:" + stringDatum);
                 }
                 break;
 
@@ -163,7 +163,7 @@ public class GetMessageAdapter extends RecyclerView.Adapter {
                 Bitmap scaled_bitmap = (Bitmap) BitmapFactory.decodeByteArray(decodedString1, 0, decodedString1.length,opts);
 
                 ((TheirPictureViewHolder) viewHolder).img_recived.setImageBitmap(scaled_bitmap);
-                ((TheirPictureViewHolder) viewHolder).theirname.setText(recipent+", sent on: "+stringDatum);
+                ((TheirPictureViewHolder) viewHolder).theirname.setText(sender+", sent on: "+stringDatum);
                 break;
 
             case VIEW_TYPE_PICTURE_SENT:
